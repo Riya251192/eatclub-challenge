@@ -24,12 +24,12 @@ public class EatClubDealsController {
     EatClubDealService eatClubDealService;
 
     @GetMapping
-    public ResponseEntity<List<DealDetails>> getDealsAtTime(@RequestParam(Constants.TIME_OF_DAY) String timeOfDay) {
+    public ResponseEntity<List<DealDetails>> getDealsAtTime(@RequestParam String timeOfDay) {
         return new ResponseEntity(eatClubDealService.computeDeals(Constants.TIME_OF_DAY,timeOfDay),HttpStatus.OK);
     }
 
     @GetMapping("/peak-time")
-    public Map<String, String> getPeakTime() {
-        return eatClubDealService.computeDealPeakTime();
+    public ResponseEntity<Map<String, String>> getPeakTime() {
+        return new ResponseEntity(eatClubDealService.computeDealPeakTime(), HttpStatus.OK);
     }
 }

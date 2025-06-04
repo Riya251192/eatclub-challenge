@@ -14,8 +14,6 @@ public class Helper {
 
     public LocalTime retrieveLocalTime(String timeOfDay) {
         if (timeOfDay != null && timeOfDay.length() < 7) timeOfDay = '0' + timeOfDay;
-
-        DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("hh:mma").toFormatter(Locale.US);
         LocalTime queryTime = LocalTime.parse(timeOfDay, new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("hh:mma").toFormatter(Locale.US));
         return queryTime;
     }
@@ -24,8 +22,6 @@ public class Helper {
         if (timeOfDay != null && timeOfDay.length() < 7) timeOfDay = '0' + timeOfDay;
         LocalDate date = LocalDate.now();
 
-
-        DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd:mm:yyy hh:mma").toFormatter(Locale.US);
         LocalTime queryTime = LocalTime.parse(timeOfDay, new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("hh:mma").toFormatter(Locale.US));
         LocalDateTime localDateTime = LocalDateTime.of(date, queryTime);
         return localDateTime;

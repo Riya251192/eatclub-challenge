@@ -1,7 +1,9 @@
 package com.eatclub.service;
 
+import com.eatclub.exception.BadRequestException;
 import com.eatclub.model.DealDetails;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,7 +23,7 @@ public class EatClubDealContext {
         if (strategy != null) {
             return strategy.computeDeals(value);
         } else {
-            throw new IllegalArgumentException("Unsupported notification type: " + type);
+            throw new BadRequestException("Unsupported Filter type: " + type);
         }
     }
 
