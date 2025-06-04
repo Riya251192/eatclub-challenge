@@ -9,12 +9,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-
-@Component
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Restaurant {
 

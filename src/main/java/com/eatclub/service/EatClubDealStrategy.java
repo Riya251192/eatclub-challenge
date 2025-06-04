@@ -5,9 +5,11 @@ import com.eatclub.model.Restaurant;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 
-@Service
 public interface EatClubDealStrategy {
     List<DealDetails> computeDeals(String timeOfDay);
+    String getType();
+
 }
