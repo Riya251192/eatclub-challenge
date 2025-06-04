@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @Slf4j
@@ -36,9 +37,9 @@ public class RestaurantDealsRepositoryImpl implements RestaurantDealsRepository 
                     new URI(url),
                     RestaurantCollection.class
             );
-            if ((restaurants != null && restaurants.getBody() == null
-                    || restaurants.getBody().getRestaurants() == null || restaurants.getBody().getRestaurants().isEmpty())
-                    || restaurants == null) {
+            if ((Objects.nonNull(restaurants)  && Objects.isNull(restaurants.getBody())
+                    || Objects.isNull(restaurants.getBody().getRestaurants()) || restaurants.getBody().getRestaurants().isEmpty())
+                    || Objects.isNull(restaurants)) {
                 return Collections.emptyList();
             }
             return restaurants.getBody().getRestaurants();

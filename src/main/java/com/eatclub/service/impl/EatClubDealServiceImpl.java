@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeMap;
+import java.util.*;
 
 @Service
 public class EatClubDealServiceImpl implements EatClubDealService {
@@ -43,8 +40,8 @@ public class EatClubDealServiceImpl implements EatClubDealService {
         Map<LocalTime, Integer> timeCounts = new TreeMap<>();
         for (Restaurant restaurant : restaurantDealsRepository.retrieveRestaurantDeals()) {
             for (Deal deal : restaurant.getDeals()) {
-                LocalDateTime dealStart = deal.getStart() != null ? helper.retrieveLocalDateTime(deal.getStart()) : helper.retrieveLocalDateTime(restaurant.getOpen());
-                LocalDateTime dealEnd = deal.getEnd() != null ? helper.retrieveLocalDateTime(deal.getEnd()) : helper.retrieveLocalDateTime(restaurant.getClose());
+                LocalDateTime dealStart = Objects.nonNull(deal.getStart()) ? helper.retrieveLocalDateTime(deal.getStart()) : helper.retrieveLocalDateTime(restaurant.getOpen());
+                LocalDateTime dealEnd = Objects.nonNull(deal.getEnd()) ? helper.retrieveLocalDateTime(deal.getEnd()) : helper.retrieveLocalDateTime(restaurant.getClose());
                 for (LocalDateTime time = dealStart.withMinute(0); !time.isAfter(dealEnd); time = time.plusHours(1)) {
                     timeCounts.put(time.toLocalTime(), timeCounts.getOrDefault(time.toLocalTime(), 0) + 1);
                 }
