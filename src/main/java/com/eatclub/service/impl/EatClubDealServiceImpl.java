@@ -6,6 +6,7 @@ import com.eatclub.model.Restaurant;
 import com.eatclub.repository.RestaurantDealsRepository;
 import com.eatclub.service.EatClubDealService;
 import com.eatclub.service.EatClubDealContext;
+import com.eatclub.utility.Constants;
 import com.eatclub.utility.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,22 +15,27 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 
 @Service
 public class EatClubDealServiceImpl implements EatClubDealService {
 
     @Autowired
+    public
     EatClubDealContext eatClubDealContext;
 
     @Autowired
+    public
     RestaurantDealsRepository restaurantDealsRepository;
     @Autowired
+    public
     Helper helper;
 
+
     @Override
-    public List<DealDetails> computeDeals(String filter , String value) {
-        return eatClubDealContext.computeDeals(filter,value);
+    public List<DealDetails> computeDeals(String filter, String value) {
+        return eatClubDealContext.computeDeals(filter, value);
     }
 
     @Override
@@ -39,19 +45,26 @@ public class EatClubDealServiceImpl implements EatClubDealService {
             for (Deal deal : restaurant.getDeals()) {
                 LocalDateTime dealStart = deal.getStart() != null ? helper.retrieveLocalDateTime(deal.getStart()) : helper.retrieveLocalDateTime(restaurant.getOpen());
                 LocalDateTime dealEnd = deal.getEnd() != null ? helper.retrieveLocalDateTime(deal.getEnd()) : helper.retrieveLocalDateTime(restaurant.getClose());
-                for (LocalDateTime time = dealStart.withMinute(0); !time.isAfter(dealEnd) ; time = time.plusHours(1)) {
+                for (LocalDateTime time = dealStart.withMinute(0); !time.isAfter(dealEnd); time = time.plusHours(1)) {
                     timeCounts.put(time.toLocalTime(), timeCounts.getOrDefault(time.toLocalTime(), 0) + 1);
                 }
             }
         }
 
-        LocalTime peakTime = timeCounts.entrySet().stream()
+        Optional<LocalTime> peakTime = timeCounts.entrySet().stream()
                 .max(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey).orElse(LocalTime.of(0, 0));
+                .map(Map.Entry::getKey);
 
+        if (peakTime.isPresent()) {
+            return Map.of(
+                    Constants.PEAK_START, peakTime.get().toString(),
+                    Constants.PEAK_END, peakTime.get().plusHours(1).toString()
+            );
+        }
         return Map.of(
-                "peakTimeStart", peakTime.toString(),
-                "peakTimeEnd", peakTime.plusHours(1).toString()
+                Constants.PEAK_START, Constants.NO_DEALS,
+                Constants.PEAK_END, Constants.NO_DEALS
         );
+
     }
 }

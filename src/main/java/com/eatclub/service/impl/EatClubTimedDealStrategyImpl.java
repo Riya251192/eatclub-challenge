@@ -9,23 +9,22 @@ import com.eatclub.service.EatClubDealStrategy;
 import com.eatclub.utility.Constants;
 import com.eatclub.utility.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EatClubTimedDealStrategyImpl implements EatClubDealStrategy {
 
     @Autowired
-    RestaurantDealsRepository restaurantDealsRepository;
+    public RestaurantDealsRepository restaurantDealsRepository;
 
     @Autowired
-    Helper helper;
+    public Helper helper;
 
     @Autowired
-    DealDetailsMapper mapper;
+    public DealDetailsMapper mapper;
 
     @Override
     public List<DealDetails> computeDeals(String timeOfDay) {
@@ -37,9 +36,11 @@ public class EatClubTimedDealStrategyImpl implements EatClubDealStrategy {
             for (Deal deal : restaurant.getDeals()) {
                 LocalTime dealStart = deal.getStart() != null ? helper.retrieveLocalTime(deal.getStart()) : helper.retrieveLocalTime(restaurant.getOpen());
                 LocalTime dealEnd = deal.getEnd() != null ? helper.retrieveLocalTime(deal.getEnd()) : helper.retrieveLocalTime(restaurant.getClose());
-                if (!queryTime.isBefore(dealStart) && !queryTime.isAfter(dealEnd)) {
-                    DealDetails dealDetails = mapper.mapToDealDetails(restaurant, deal);
-                    deals.add(dealDetails);
+                if(dealStart!=null && dealEnd!=null) {
+                    if (!queryTime.isBefore(dealStart) && !queryTime.isAfter(dealEnd)) {
+                        DealDetails dealDetails = mapper.mapToDealDetails(restaurant, deal);
+                        deals.add(dealDetails);
+                    }
                 }
             }
         }

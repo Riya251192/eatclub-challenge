@@ -26,7 +26,5 @@ public class EatClubDealContext {
             throw new BadRequestException("Unsupported Filter type: " + type);
         }
     }
-
-
 }
 

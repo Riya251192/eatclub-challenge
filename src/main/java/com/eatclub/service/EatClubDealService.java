@@ -1,7 +1,6 @@
 package com.eatclub.service;
 
 import com.eatclub.model.DealDetails;
-
 import java.util.List;
 import java.util.Map;
 

@@ -15,6 +15,10 @@ public class DealDetailsMapper {
             dealDetails.setRestaurantOpen(restaurant.getOpen());
             dealDetails.setRestaurantClose(restaurant.getClose());
             dealDetails.setDealObjectId(deal.getObjectId());
+            dealDetails.setDiscount(deal.getDiscount());
+            dealDetails.setDineIn(deal.getDineIn());
+            dealDetails.setLightning(deal.getLightning());
+            dealDetails.setQtyLeft(deal.getQtyLeft());
 
         return dealDetails;
     }
